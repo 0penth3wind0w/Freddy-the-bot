@@ -1,4 +1,6 @@
 # encoding: utf-8
+import os
+import requests
 from flask import Flask, request, abort
 
 from linebot import (
@@ -11,10 +13,13 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
+ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
+SECRET = os.environ.get('CHANNEL_SECRET')
+
 app = Flask(__name__)
 
-handler = WebhookHandler('50ec8be98231c0b9160010b0168d5b84') 
-line_bot_api = LineBotApi('JwiTvkveHMuZuYvR0OyFqjqOyeHtZaN0pwnvKlVv5ezLXiU9MQp8+3ARGV42Ntre8uepyJA9RZbLzhuUEauBqS0NLkX5YPwve5Ib67RLQzQvpAG+aBLopSDouhezmY5TYdIAHJIz8YEp1TVJKgnWjAdB04t89/1O/w1cDnyilFU=') 
+handler = WebhookHandler(SECRET) 
+line_bot_api = LineBotApi(ACCESS_TOKEN) 
 
 
 @app.route('/')
@@ -38,7 +43,7 @@ def callback():
 
     return 'OK'
 
-# ================= 機器人區塊 Start =================
+# ================= Bot Start =================
 @handler.add(MessageEvent, message=TextMessage)  # default
 def handle_text_message(event):                  # default
     msg = event.message.text #message from user
@@ -50,8 +55,8 @@ def handle_text_message(event):                  # default
 
     # 針對使用者各種訊息的回覆 End =========
 
-# ================= 機器人區塊 End =================
+# ================= BOT End =================
 
-import os
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=os.environ['PORT'])
+    app.run()
