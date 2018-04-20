@@ -46,7 +46,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)  # default
 def handle_text_message(event):                  # default
 	msg = event.message.text #message from user
-	profile = line_bot_api.get_profile(event.source.userID)
+	profile = line_bot_api.get_profile(event.source.userId)
 	# 針對使用者各種訊息的回覆 Start =========
 	line_bot_api.reply_message(
 		event.reply_token,
