@@ -56,6 +56,7 @@ def handle_text_message(event):                  # default
 @handler.add(FollowEvent, source=SourceUser)
 def handle_follow(event):
 	profile = line_bot_api.get_profile(event.source.userId)
+	print(profile.display_name)
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text="你好"+str(profile.display_name)))
