@@ -4,7 +4,7 @@ import requests
 from flask import Flask, request, abort
 
 # functions
-from response import response
+from response import replyText
 
 # LINE
 from linebot import (
