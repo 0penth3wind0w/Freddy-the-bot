@@ -8,7 +8,6 @@ django-heroku = "*"
 requests = "*"
 line-bot-sdk = "*"
 flask = "*"
-regex = "*"
 
 [requires]
 python_version = "3.6"
