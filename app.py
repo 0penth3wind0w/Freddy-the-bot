@@ -53,6 +53,13 @@ def handle_text_message(event):                  # default
 	# 針對使用者各種訊息的回覆 End =========
 
 
+@handler.add(FollowEvent, source=SourceUser)
+def handle_follow(event):
+	profile = line_bot_api.get_profile(event.source.userId)
+	line_bot_api.reply_message(
+		event.reply_token,
+		TextSendMessage(text="你好"+str(profile.display_name)))
+
 
 
 # ================= BOT End =================
