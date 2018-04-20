@@ -28,7 +28,7 @@ def index():
 @app.route("/callback", methods=['POST'])
 def callback():
 	# get X-Line-Signature header value
-	signature = request.headers['X-Line-Signature']
+	signature = request.headers['X-Line-Signature', 'Authorization']
 
 	# get request body as text
 	body = request.get_data(as_text=True)
@@ -48,9 +48,6 @@ def handle_text_message(event):                  # default
 	msg = event.message.text #message from user
 	profile = line_bot_api.get_profile(event.source.userID
 	# 針對使用者各種訊息的回覆 Start =========
-	line_bot_api.reply_message(
-		event.reply_token,
-		TextSendMessage(text=msg))
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text=profile.displayName))
