@@ -80,7 +80,7 @@ def replyText(event):
 			profile.user_id,
 			TextSendMessage(text=reply_msg))
 	if ("工作" or "實習") in msg:
-		reply_msg = "大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護"()
+		reply_msg = "大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護"
 		line_bot_api.push_message(
 			profile.user_id,
 			TextSendMessage(text=reply_msg)
