@@ -10,7 +10,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, FollowEvent,
 )
 
 ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
@@ -54,6 +54,16 @@ def handle_text_message(event):                  # default
         TextSendMessage(text=msg))
 
     # 針對使用者各種訊息的回覆 End =========
+
+@handler.add(FollowEvent)
+def handle_follow_event(event):
+    user_id = event.source.userId
+    profile = line_bot_api.get_profile(user_id)
+    
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="你好"+str(profile.display_name))
+    
 
 # ================= BOT End =================
 
