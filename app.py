@@ -13,7 +13,7 @@ from linebot.exceptions import (
 	InvalidSignatureError
 )
 from linebot.models import (
-	MessageEvent,
+	Event, MessageEvent,
 	TextMessage, TextSendMessage,
 	StickerMessage, StickerSendMessage,
 	FileMessage, FollowEvent,
@@ -123,7 +123,7 @@ class Reply(Event):
 		line_bot_api.push_message(
 				profile.user_id,
 				msg)
-	def reply(msg)
+	def reply(msg):
 		line_bot_api.reply_message(
 				event.reply_token,
 				msg)
