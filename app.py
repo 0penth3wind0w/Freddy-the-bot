@@ -71,10 +71,10 @@ class Reply(Event):
 	def __init__(self, event=None):
 		self.event = event
 		self.profile = line_bot_api.get_profile(event.source.user_id)
-	def reply_to_usr():
+	def reply_to_usr(self):
 		replied = False
-		profile = line_bot_api.get_profile(event.source.user_id)
-		msg = event.message.text #message from user
+		profile = line_bot_api.get_profile(self.event.source.user_id)
+		msg = self.event.message.text #message from user
 		if bool(re.search("[hi|Hello|你好|嗨|哈囉]", msg)):
 			msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
 			reply_msg = random.choice(msgs) + "～"
@@ -119,11 +119,11 @@ class Reply(Event):
 			reply(msgObj)
 			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
 			push(stkObj)
-	def push(msg):
+	def push(self, msg):
 		line_bot_api.push_message(
 				profile.user_id,
 				msg)
-	def reply(msg):
+	def reply(self, msg):
 		line_bot_api.reply_message(
 				event.reply_token,
 				msg)
