@@ -100,7 +100,10 @@ def replyText(event):
 			TextSendMessage(text=reply_msg))
 		replied = True
 	if not replied:
-		reply_msg = "Sorry"
+		reply_msg = "對不起，我現在還不會回答這個問題\nQ_Q"
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(text=reply_msg))
+			TextSendMessage(text=reply_msg)
+		line_bot_api.push_message(
+			profile.user_id,
+			StickerSendMessage(package_id=2,sticker_id=153))
