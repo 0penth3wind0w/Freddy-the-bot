@@ -75,7 +75,8 @@ class Reply(Event):
 	def reply_to_usr(self):
 		replied = False
 		msg = self.event.message.text #message from user
-		if bool(re.match("[(hi)|(Hello)|(你好)|(嗨)|(哈囉)]", msg)):
+		
+		if bool(r.match(r"[(hi)|(Hello)|(你好)|(嗨)|(哈囉)]", msg)):
 			msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
 			reply_msg = random.choice(msgs) + "～"
 			msgObj = TextSendMessage(text=reply_msg)
