@@ -3,6 +3,7 @@ import os
 import requests
 from flask import Flask, request, abort
 import random
+import re
 
 # LINE
 from linebot import (
@@ -70,7 +71,7 @@ def replyText(event):
 	replied = False
 	profile = line_bot_api.get_profile(event.source.user_id)
 	msg = event.message.text #message from user
-	if ('hi' or 'Hello' or "你好" or "嗨" or "哈囉") in msg:
+	if bool(re.search("hi|Hello|你好|嗨|哈囉", msg)):
 		msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
 		reply_msg = random.choice(msgs) + "～"
 		line_bot_api.reply_message(
