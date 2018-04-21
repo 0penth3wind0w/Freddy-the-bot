@@ -157,7 +157,7 @@ class Reply(Event):
 			self.push(msgObj)
 			replied = True
 		if ("使用說明" in msg) or ("如何使用" in msg):
-			msgObj = TemplateSendMessage(button)
+			msgObj = button
 			if replied:
 				self.push(msgObj)
 			else:
