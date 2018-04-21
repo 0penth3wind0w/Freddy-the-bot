@@ -2,9 +2,7 @@
 import os
 import requests
 from flask import Flask, request, abort
-
-# functions
-#from response import replyText
+import random
 
 # LINE
 from linebot import (
@@ -46,7 +44,6 @@ def callback():
 		handler.handle(body, signature)
 	except InvalidSignatureError:
 		abort(400)
-
 	return 'OK'
 
 # ================= Bot Start =================
@@ -54,7 +51,6 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)  # default
 def handle_text_message(event):                  # default
 	replyText(event)
-	
 
 # Greeting messages when user add this bot
 @handler.add(FollowEvent)
@@ -70,16 +66,17 @@ def handle_follow(event):
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=os.environ['PORT'])
 
-class MessageCatelogue():
-	__init__():
-		
-
-
 def replyText(event):
 	replied = False
 	profile = line_bot_api.get_profile(event.source.user_id)
 	msg = event.message.text #message from user
-	
+	if ('hi' or 'Hello' or "你好" or "嗨" or "哈囉") in msg:
+		msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
+		reply_msg = random.choice(msgs) + "～"
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(text=reply_msg))
+		replied = True
 	if ("學歷" or "學校" or "就讀") in msg:
 		reply_msg = "我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。"
 		line_bot_api.push_message(
@@ -100,8 +97,8 @@ def replyText(event):
 		replied = True
 	if ("履歷" or "簡歷" or "自傳") in msg:
 		reply_msg = "等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷"
-		line_bot_api.push_message(
-			profile.user_id,
+		line_bot_api.reply_message(
+			event.reply_token,
 			TextSendMessage(text=reply_msg))
 		replied = True
 	if not replied:
