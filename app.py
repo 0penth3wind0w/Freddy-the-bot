@@ -14,10 +14,10 @@ from linebot.exceptions import (
 	InvalidSignatureError
 )
 from linebot.models import (
-	Event, MessageEvent,
+	Event, MessageEvent, FollowEvent, JoinEvent,
 	TextMessage, TextSendMessage,
 	StickerMessage, StickerSendMessage,
-	FileMessage, FollowEvent,
+	RichMenu
 )
 
 ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
@@ -48,10 +48,10 @@ def callback():
 		abort(400)
 	return 'OK'
 
-# ================= Bot Start =================
+# ============ Bot Related Handler Start ============
 # Reply to text message
-@handler.add(MessageEvent, message=TextMessage)  # default
-def handle_text_message(event):                  # default
+@handler.add(MessageEvent, message=TextMessage)
+def handle_text_message(event):
 	Reply(event).reply_to_usr()
 
 # Greeting messages when user add this bot
@@ -63,11 +63,36 @@ def handle_follow(event):
 		event.reply_token,
 		TextSendMessage(text=greeting_msg))
 	#line_bot_api.push_message(profile.user_id,)
-# ================= BOT End =================
 
-if __name__ == "__main__":
-	app.run(host='0.0.0.0',port=os.environ['PORT'])
+@handler.add(JoinEvent)
+def handle_join(event):
+	profile = line_bot_api.get_profile(event.source.group_id)
+	greeting_msg = profile.display_name+"大家好～我是自我介紹機器人Freddy請大家趕快加我好友吧"
+	line_bot_api.reply_message(
+		event.reply_token,
+		TextSendMessage(text=greeting_msg))
+# ============ BOT Related Handler End ===============
 
+# Rich Menu
+rich_menu_to_create = RichMenu(
+	size=RichMenuBound(
+		width=2500,
+		height=1686),
+	selected= False,
+	name="nice richmenu",
+	chatBarText="touch me",
+	areas=[
+		RichMenuArea(
+			RichMenuBound(
+				x=0,y=0,
+				width=2500,
+				height=1686),
+			URITemplateAction(
+				uri='line://nv/location'))]
+)
+rich_menu_id = line_bot_api.create_rich_menu(data=rich_menu_to_create)
+
+# Use to reply users
 class Reply(Event):
 	def __init__(self, event=None):
 		self.event = event
@@ -89,7 +114,7 @@ class Reply(Event):
 			else:
 				self.reply(msgObj)
 			replied = True
-		if bool(re.search("[工作|實習]", msg)):
+		if ("工作" in msg) or ("實習" in msg):
 			reply_msg = "大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護"
 			msgObj = TextSendMessage(text=reply_msg)
 			if replied:
@@ -97,7 +122,7 @@ class Reply(Event):
 			else:
 				self.reply(msgObj)
 			replied = True
-		if bool(re.search("[程式.語言|語言.程式|用.語言]", msg)):
+		if (("程式" in msg) or ("用" in msg)) and ("語言" in msg):
 			reply_msg = "我會的程式語言有C/C++,Python\n也曾經接觸過一點點的Ruby on Rails和JavaScript喔"
 			msgObj = TextSendMessage(text=reply_msg)
 			if replied:
@@ -105,13 +130,16 @@ class Reply(Event):
 			else:
 				self.reply(msgObj)
 			replied = True
-		if bool(re.search("[履歷|簡歷|自傳]", msg)):
+		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg):
 			reply_msg = "等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷"
 			msgObj = TextSendMessage(text=reply_msg)
 			if replied:
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
+			reply_msg = "https://goo.gl/nDL4eQ"
+			msgObj = TextSendMessage(text=reply_msg)
+			self.push(msgObj)
 			replied = True
 		if not replied:
 			reply_msg = "對不起，我現在還不會回答這個問題\nQ_Q"
@@ -127,3 +155,6 @@ class Reply(Event):
 		line_bot_api.reply_message(
 				self.event.reply_token,
 				msg)
+
+if __name__ == "__main__":
+	app.run(host='0.0.0.0',port=os.environ['PORT'])
