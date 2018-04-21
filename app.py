@@ -51,7 +51,7 @@ def callback():
 # Reply to text message
 @handler.add(MessageEvent, message=TextMessage)  # default
 def handle_text_message(event):                  # default
-	replyText(event)
+	Reply(event).reply_to_usr()
 
 # Greeting messages when user add this bot
 @handler.add(FollowEvent)
@@ -66,6 +66,68 @@ def handle_follow(event):
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=os.environ['PORT'])
+
+class Reply(Event):
+	def __init__(self, event=None):
+		self.event = event
+		self.profile = line_bot_api.get_profile(event.source.user_id)
+	def reply_to_usr():
+		replied = False
+		profile = line_bot_api.get_profile(event.source.user_id)
+		msg = event.message.text #message from user
+		if bool(re.search("[hi|Hello|你好|嗨|哈囉]", msg)):
+			msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
+			reply_msg = random.choice(msgs) + "～"
+			msgObj = TextSendMessage(text=reply_msg))
+			reply(msgObj)
+			replied = True
+		if bool(re.search("[學歷|學校|就讀|大學|研究所]", msg)):
+			reply_msg = "我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。"
+			msgObj = TextSendMessage(text=reply_msg))
+			if replied:
+				push(msgObj)
+			else:
+				reply(msgObj)
+			replied = True
+		if bool(re.search("[工作|實習]", msg)):
+			reply_msg = "大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護"
+			msgObj = TextSendMessage(text=reply_msg))
+			if replied:
+				push(msgObj)
+			else:
+				reply(msgObj)
+			replied = True
+		if bool(re.search("[程式.語言|語言.程式|用.語言]", msg)):
+			reply_msg = "我會的程式語言有C/C++,Python\n也曾經接觸過一點點的Ruby on Rails和JavaScript喔"
+			msgObj = TextSendMessage(text=reply_msg))
+			if replied:
+				push(msgObj)
+			else:
+				reply(msgObj)
+			replied = True
+		if bool(re.search("[履歷|簡歷|自傳]", msg)):
+			reply_msg = "等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷"
+			msgObj = TextSendMessage(text=reply_msg))
+			if replied:
+				push(msgObj)
+			else:
+				reply(msgObj)
+			replied = True
+		if not replied:
+			reply_msg = "對不起，我現在還不會回答這個問題\nQ_Q"
+			msgObj = TextSendMessage(text=reply_msg))
+			reply(msgObj)
+			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
+			push(stkObj)
+	def push(msg):
+		line_bot_api.push_message(
+				profile.user_id,
+				msg)
+	def reply(msg)
+		line_bot_api.reply_message(
+				event.reply_token,
+				msg)
+
 
 def replyText(event):
 	replied = False
@@ -93,7 +155,7 @@ def replyText(event):
 	if bool(re.search("[程式.語言|語言.程式|用.語言]", msg)):
 		reply_msg = "我會的程式語言有C/C++,Python\n也曾經接觸過一點點的Ruby on Rails和JavaScript喔"
 		line_bot_api.reply_message(
-			profile.user_id,
+			event.reply_token,
 			TextSendMessage(text=reply_msg))
 		replied = True
 	if bool(re.search("[履歷|簡歷|自傳]", msg)):
