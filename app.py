@@ -53,10 +53,11 @@ def handle_text_message(event):
 @handler.add(FollowEvent)
 def handle_follow(event):
 	profile = line_bot_api.get_profile(event.source.user_id)
-	greeting_msg = profile.display_name+"你好～我是自我介紹機器人Freddy，很高興認識你\n請問你想之知道什麼呢？"
+	greeting_msg = profile.display_name+"你好～我是自我介紹機器人Freddy，很高興認識你\n請先試試看各項功能吧"
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text=greeting_msg))
+	
 	#line_bot_api.push_message(profile.user_id,)
 
 @handler.add(JoinEvent)
@@ -69,15 +70,15 @@ def handle_join(event):
 # ============ BOT Related Handler End ===============
 #Button Template
 button = TemplateSendMessage(
-	alt_text='目錄 template',
+	alt_text="說明",
 	template=ButtonsTemplate(
-		title='選擇服務',
-		text='請選擇',
+		title="使用說明",
+		text="",
 		thumbnail_image_url='https://i.imgur.com/kzi5kKy.jpg',
 		actions=[
 			MessageTemplateAction(
-				label='開始玩',
-				text='開始玩'),
+				label="範例",
+				text="範例"),
 			URITemplateAction(
 				label='影片介紹 阿肥bot',
 				uri='https://youtu.be/1IxtWgWxtlE'),
@@ -85,8 +86,79 @@ button = TemplateSendMessage(
 				label='如何建立自己的 Line Bot',
 				uri='https://github.com/twtrubiks/line-bot-tutorial'),
 			URITemplateAction(
-				label='聯絡作者',
+				label="到github參觀",
 				uri='https://www.facebook.com/TWTRubiks?ref=bookmarks')])
+)
+button_work = TemplateSendMessage(
+	alt_text="工作",
+	template=ButtonsTemplate(
+		title="功能介紹 - 實習類問題",
+		text="你可以試著問我這樣的問題",
+		thumbnail_image_url='https://i.imgur.com/kzi5kKy.jpg',
+		actions=[
+			MessageTemplateAction(
+				label="你有實習的經驗嗎？",
+				text="你有實習的經驗嗎？"),
+			MessageTemplateAction(
+				label="說說你的實習經驗吧",
+				text="你有實習的經驗嗎？"),
+			URITemplateAction(
+				label="你有相關的工作經驗嗎？",
+				uri='https://www.facebook.com/TWTRubiks?ref=bookmarks')])
+)
+button_edu = TemplateSendMessage(
+	alt_text="教育",
+	template=ButtonsTemplate(
+		title="功能介紹 - 學經歷",
+		text="你可以試著問我這樣的問題",
+		thumbnail_image_url='https://i.imgur.com/kzi5kKy.jpg',
+		actions=[
+			MessageTemplateAction(
+				label="你目前就讀那間學校呢？",
+				text="你目前就讀那間學校呢？"),
+			MessageTemplateAction(
+				label="說說你的學歷吧",
+				text="說說你的學歷吧"),
+			MessageTemplateAction(
+				label="你畢業於哪一所學校呢？",
+				text="你畢業於哪一所學校呢？")])
+)
+carousel_template_message = TemplateSendMessage(
+	alt_text='Carousel template',
+	template=CarouselTemplate(
+		columns=[
+			CarouselColumn(
+				thumbnail_image_url='https://example.com/item1.jpg',
+				title="功能介紹 - 實習類問題",
+				text="你可以試著問我這樣的問題",
+				actions=[
+					PostbackTemplateAction(
+						label='postback1',
+						text='postback text1',
+						data='action=buy&itemid=1'),
+					MessageTemplateAction(
+						label='message1',
+						text='message text1'),
+					URITemplateAction(
+						label='uri1',
+						uri='http://example.com/1')]),
+			CarouselColumn(
+				thumbnail_image_url='https://example.com/item2.jpg',
+				title='this is menu2',
+				text='description2',
+				actions=[
+					PostbackTemplateAction(
+						label='postback2',
+						text='postback text2',
+						data='action=buy&itemid=2'),
+					MessageTemplateAction(
+						label='message2',
+						text='message text2'),
+					URITemplateAction(
+						label='uri2',
+						uri='http://example.com/2')])
+		]
+	)
 )
 # Rich Menu
 '''rich_menu_to_create = RichMenu(
@@ -157,7 +229,7 @@ class Reply(Event):
 			self.push(msgObj)
 			replied = True
 		if ("使用說明" in msg) or ("如何使用" in msg):
-			msgObj = button
+			msgObj = carousel_template_message
 			if replied:
 				self.push(msgObj)
 			else:
