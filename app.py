@@ -71,7 +71,7 @@ def replyText(event):
 	replied = False
 	profile = line_bot_api.get_profile(event.source.user_id)
 	msg = event.message.text #message from user
-	if bool(re.search("hi|Hello|你好|嗨|哈囉", msg)):
+	if bool(re.search("[hi|Hello|你好|嗨|哈囉]", msg)):
 		msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
 		reply_msg = random.choice(msgs) + "～"
 		line_bot_api.reply_message(
