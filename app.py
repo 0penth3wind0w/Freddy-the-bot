@@ -75,13 +75,13 @@ class Reply(Event):
 	def reply_to_usr(self):
 		replied = False
 		msg = self.event.message.text #message from user
-		if ('hi' in msg) or ('Hello' in msg) or ("你好" in msg) or ("嗨" in msg) or ("哈囉" in msg):
-			msgs = ['hi', 'Hello', "你好", "嗨", "哈囉"]
+		if ("Hi" in msg) or ("Hello" in msg) or ("你好" in msg) or ("嗨" in msg) or ("哈囉" in msg):
+			msgs = ["hi", "Hello", "你好", "嗨", "哈囉"]
 			reply_msg = random.choice(msgs) + "～"
 			msgObj = TextSendMessage(text=reply_msg)
 			self.reply(msgObj)
 			replied = True
-		if bool(re.search("[學歷|學校|就讀|大學|研究所]", msg)):
+		if ("Hi" in msg) or ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
 			reply_msg = "我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。"
 			msgObj = TextSendMessage(text=reply_msg)
 			if replied:
