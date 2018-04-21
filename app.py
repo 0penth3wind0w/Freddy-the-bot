@@ -78,25 +78,25 @@ def replyText(event):
 			event.reply_token,
 			TextSendMessage(text=reply_msg))
 		replied = True
-	if ("學歷" or "學校" or "就讀") in msg:
+	if bool(re.search("[學歷|學校|就讀|大學|研究所]", msg)):
 		reply_msg = "我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。"
 		line_bot_api.push_message(
 			profile.user_id,
 			TextSendMessage(text=reply_msg))
 		replied = True
-	if ("工作" or "實習") in msg:
+	if bool(re.search("[工作|實習]", msg)):
 		reply_msg = "大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護"
 		line_bot_api.push_message(
 			profile.user_id,
 			TextSendMessage(text=reply_msg))
 		replied = True
-	if (("程式" and "語言") or ("用" and "語言")) in msg:
+	if bool(re.search("[程式.語言|語言.程式|用.語言]", msg)):
 		reply_msg = "我會的程式語言有C/C++,Python\n也曾經接觸過一點點的Ruby on Rails和JavaScript喔"
-		line_bot_api.push_message(
+		line_bot_api.reply_message(
 			profile.user_id,
 			TextSendMessage(text=reply_msg))
 		replied = True
-	if ("履歷" or "簡歷" or "自傳") in msg:
+	if bool(re.search("[履歷|簡歷|自傳]", msg)):
 		reply_msg = "等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷"
 		line_bot_api.reply_message(
 			event.reply_token,
