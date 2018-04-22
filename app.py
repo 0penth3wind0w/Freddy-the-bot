@@ -27,12 +27,8 @@ def index():
 
 @app.route('/image')
 def get_image():
-	if request.args.get('name') == 'carousel':
-		filename = 'image/carousel.jpg'
-	else:
-		filename = 'image/error.jpg'
+	filename = 'image/carousel.jpg'
 	return send_file(filename, mimetype='image/jpg')
-    
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -102,7 +98,7 @@ example = TemplateSendMessage(
 	template=CarouselTemplate(
 		columns=[
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image?name=carousel.jpg',
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image',
 				title="功能介紹 - 實習相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
