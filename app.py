@@ -95,7 +95,7 @@ button_info = TemplateSendMessage(
 		actions=[
 			URITemplateAction(
 				label='詳細功能介紹',
-				uri='https://github.com/0penth3wind0w'),
+				uri='https://github.com/0penth3wind0w/Freddy-the-bot'),
 			MessageTemplateAction(
 				label="使用範例",
 				text="使用範例")])
@@ -178,7 +178,7 @@ class Reply(Event):
 			self.reply(msgObj)
 			replied = True
 		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
-			msgObj = TextSendMessage(text="我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。")
+			msgObj = TextSendMessage(text="我目前就讀於北科大的資訊工程研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。")
 			if replied:
 				self.push(msgObj)
 			else:
