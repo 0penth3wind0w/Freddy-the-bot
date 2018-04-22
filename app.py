@@ -112,7 +112,7 @@ example = TemplateSendMessage(
 						label="你有相關的工作經驗嗎？",
 						text="你有相關的工作經驗嗎？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image?name=carousel.jpg',
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image',
 				title="功能介紹 - 學歷相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
@@ -126,7 +126,7 @@ example = TemplateSendMessage(
 						label="你畢業於哪一所學校呢？",
 						text="你畢業於哪一所學校呢？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image?name=carousel.jpg',
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image',
 				title="功能介紹 - 程式語言相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
@@ -140,7 +140,7 @@ example = TemplateSendMessage(
 						label="你都用什麼語言寫程式？",
 						text="你都用什麼語言寫程式？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image?name=carousel.jpg',
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image',
 				title="功能介紹 - 履歷相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
