@@ -63,11 +63,11 @@ def handle_sticker_message(event):
 @handler.add(FollowEvent)
 def handle_follow(event):
 	profile = line_bot_api.get_profile(event.source.user_id)
-	greeting_msg = profile.display_name+"你好～我是Freddy，很高興認識你\n請先試試看各項功能吧"
+	greeting_msg = profile.display_name+"你好～我是Freddy，很高興認識你\n請先試試看下面的功能吧"
 	line_bot_api.reply_message(
 		event.reply_token, TextSendMessage(text=greeting_msg))
 	line_bot_api.push_message(profile.user_id, carousel_example)
-	line_bot_api.push_message(profile.user_id, TextSendMessage(text="如果需要更詳細的說明可以從下方點選喔"))
+	line_bot_api.push_message(profile.user_id, TextSendMessage(text="如果想要知道更詳細的說明也可以從下方點選喔"))
 
 @handler.add(JoinEvent)
 def handle_join(event):
@@ -76,16 +76,13 @@ def handle_join(event):
 		event.reply_token,
 		TextSendMessage(text="大家好～很高興認識你們～"))
 	reply_msg = "請大家先透過網址或行動條碼加我好友吧："+os.environ.get('LINE')
-	line_bot_api.push_message(
-		gid,
-		TextSendMessage(text=reply_msg))
+	line_bot_api.push_message(gid,TextSendMessage(text=reply_msg))
 	url_code = os.environ.get('QRCODE')
 	line_bot_api.push_message(gid,ImageSendMessage(
 		original_content_url=url_code,
 		preview_image_url=url_code))
-	line_bot_api.push_message(gid, TextSendMessage(text="希望有機會可以再看到大家\n掰掰～"))
+	line_bot_api.push_message(gid, TextSendMessage(text="希望有機會可以在一對一聊天中看到大家\n掰掰～"))
 	line_bot_api.leave_group(gid)
-
 # ============ BOT Related Handler End ===============
 # Template Message
 url_carousel = reply_msg = os.environ.get('CAROUSEL')
@@ -96,15 +93,12 @@ button_info = TemplateSendMessage(
 		text="請參考以下說明：",
 		thumbnail_image_url=url_carousel,
 		actions=[
-			MessageTemplateAction(
-				label="使用範例",
-				text="使用範例"),
 			URITemplateAction(
-				label='功能介紹',
+				label='詳細功能介紹',
 				uri='https://github.com/0penth3wind0w'),
 			MessageTemplateAction(
-				label="聯絡方式",
-				text="聯絡方式")])
+				label="使用範例",
+				text="使用範例")])
 )
 
 carousel_example = TemplateSendMessage(
@@ -183,12 +177,6 @@ class Reply(Event):
 			msgObj = TextSendMessage(text=reply_msg)
 			self.reply(msgObj)
 			replied = True
-		if ("Bye" in msg) or ("掰掰" in msg) or ("再見" in msg):
-			msgs = ["Bye", "掰掰", "再見"]
-			reply_msg = random.choice(msgs) + "～"
-			msgObj = TextSendMessage(text=reply_msg)
-			self.reply(msgObj)
-			replied = True
 		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
 			msgObj = TextSendMessage(text="我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。")
 			if replied:
@@ -242,6 +230,12 @@ class Reply(Event):
 			msgObj = TextSendMessage(text=reply_msg)
 			self.push(msgObj)
 			replied = True
+		if ("Bye" in msg) or ("掰掰" in msg) or ("再見" in msg):
+			msgs = ["Bye", "掰掰", "再見"]
+			reply_msg = random.choice(msgs) + "～"
+			msgObj = TextSendMessage(text=reply_msg)
+			self.reply(msgObj)
+			replied = True
 		if not replied:
 			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...\nQ_Q")
 			self.reply(msgObj)
@@ -256,24 +250,5 @@ class Reply(Event):
 				self.event.reply_token,
 				msg)
 
-# Rich Menu
-'''rich_menu = RichMenu(
-	size=RichMenuBound(
-		width=2500,
-		height=1686),
-	selected= False,
-	name="nice richmenu",
-	chatBarText="touch me",
-	areas=[
-		RichMenuArea(
-			RichMenuBound(
-				x=0,y=0,
-				width=2500,
-				height=1686),
-			URITemplateAction(
-				uri='line://nv/location'))]
-)
-rich_menu_id = line_bot_api.create_rich_menu(data=rich_menu)
-'''
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=os.environ['PORT'])
