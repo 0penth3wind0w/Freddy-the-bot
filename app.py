@@ -52,6 +52,15 @@ def callback():
 def handle_text_message(event):
 	Reply(event).reply_to_usr()
 
+@handler.add(MessageEvent, message=StickerMessage)
+def handle_sticker_message(event):
+	stkObj = StickerSendMessage(package_id=2,sticker_id=144)
+	decide = [True, False]
+	if decide:
+		line_bot_api.reply_message(
+		event.reply_token,
+		stkObj)
+
 # Greeting messages when user add this bot
 @handler.add(FollowEvent)
 def handle_follow(event):
@@ -71,28 +80,25 @@ def handle_join(event):
 		TextSendMessage(text=greeting_msg))
 # ============ BOT Related Handler End ===============
 # Template Message
-button = TemplateSendMessage(
-	alt_text="說明",
+button_info = TemplateSendMessage(
+	alt_text="使用說明",
 	template=ButtonsTemplate(
 		title="使用說明",
 		text="",
-		thumbnail_image_url='https://i.imgur.com/kzi5kKy.jpg',
+		thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image',
 		actions=[
 			MessageTemplateAction(
-				label="範例",
-				text="範例"),
+				label="使用範例",
+				text="使用範例"),
 			URITemplateAction(
-				label='影片介紹 阿肥bot',
-				uri='https://youtu.be/1IxtWgWxtlE'),
-			URITemplateAction(
-				label='如何建立自己的 Line Bot',
-				uri='https://github.com/twtrubiks/line-bot-tutorial'),
-			URITemplateAction(
-				label="到github參觀",
-				uri='https://www.facebook.com/TWTRubiks?ref=bookmarks')])
+				label='功能介紹',
+				uri='https://github.com/0penth3wind0w'),
+			MessageTemplateAction(
+				label="聯絡方式",
+				text="聯絡方式")])
 )
 
-example = TemplateSendMessage(
+carousel_example = TemplateSendMessage(
 	alt_text="範例問題",
 	template=CarouselTemplate(
 		columns=[
@@ -153,6 +159,92 @@ example = TemplateSendMessage(
 						label="有沒有提供簡歷呢？",
 						text="有沒有提供簡歷呢？"),])])
 )
+
+# Use to reply users
+class Reply(Event):
+	def __init__(self, event=None):
+		self.event = event
+		self.profile = line_bot_api.get_profile(event.source.user_id)
+	def reply_to_usr(self):
+		replied = False
+		msg = self.event.message.text #message from user
+		if ("Hi" in msg) or ("Hello" in msg) or ("你好" in msg) or ("嗨" in msg) or ("哈囉" in msg):
+			msgs = ["Hi", "Hello", "你好", "嗨", "哈囉"]
+			reply_msg = random.choice(msgs) + "～"
+			msgObj = TextSendMessage(text=reply_msg)
+			self.reply(msgObj)
+			replied = True
+		if ("Bye" in msg) or ("掰掰" in msg) or ("再見" in msg):
+			msgs = ["Bye", "掰掰", "再見"]
+			reply_msg = random.choice(msgs) + "～"
+			msgObj = TextSendMessage(text=reply_msg)
+			self.reply(msgObj)
+			replied = True
+		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
+			msgObj = TextSendMessage(text="我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			replied = True
+		if ("工作" in msg) or ("實習" in msg):
+			msgObj = TextSendMessage(text="大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			replied = True
+		if (("程式" in msg) or ("用" in msg)) and ("語言" in msg):
+			msgObj = TextSendMessage(text="我最近常用的語言是Python\n其他會使用的語言有C/C++，也接觸過一點點的Ruby on Rails和JavaScript喔")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			replied = True
+		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg):
+			msgObj = TextSendMessage(text="等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			reply_msg = os.environ.get('RESUME')
+			msgObj = TextSendMessage(text=reply_msg)
+			self.push(msgObj)
+			replied = True
+		if ("使用"in msg) and (("說明"in msg) or ("方式"in msg)):
+			if replied:
+				self.push(button_info)
+			else:
+				self.reply(button_info)
+		if ("範例" in msg):
+			if replied:
+				self.push(carousel_example)
+			else:
+				self.reply(carousel_example)
+			replied = True
+		if ("聯絡" in msg):
+			msgObj = TextSendMessage(text="你可以透過這個email聯絡我喔")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			reply_msg = os.environ.get('CONTACT_INFO')
+			msgObj = TextSendMessage(text=reply_msg)
+			self.push(msgObj)
+		if not replied:
+			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...\nQ_Q")
+			self.reply(msgObj)
+			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
+			self.push(stkObj)
+	def push(self, msg):
+		line_bot_api.push_message(
+				self.profile.user_id,
+				msg)
+	def reply(self, msg):
+		line_bot_api.reply_message(
+				self.event.reply_token,
+				msg)
+
 # Rich Menu
 '''rich_menu = RichMenu(
 	size=RichMenuBound(
@@ -172,77 +264,5 @@ example = TemplateSendMessage(
 )
 rich_menu_id = line_bot_api.create_rich_menu(data=rich_menu)
 '''
-# Use to reply users
-class Reply(Event):
-	def __init__(self, event=None):
-		self.event = event
-		self.profile = line_bot_api.get_profile(event.source.user_id)
-	def reply_to_usr(self):
-		replied = False
-		msg = self.event.message.text #message from user
-		if ("Hi" in msg) or ("Hello" in msg) or ("你好" in msg) or ("嗨" in msg) or ("哈囉" in msg):
-			msgs = ["Hi", "Hello", "你好", "嗨", "哈囉"]
-			reply_msg = random.choice(msgs) + "～"
-			msgObj = TextSendMessage(text=reply_msg)
-			self.reply(msgObj)
-			replied = True
-		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
-			reply_msg = "我目前就讀於北科大的資訊工程系研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。"
-			msgObj = TextSendMessage(text=reply_msg)
-			if replied:
-				self.push(msgObj)
-			else:
-				self.reply(msgObj)
-			replied = True
-		if ("工作" in msg) or ("實習" in msg):
-			reply_msg = "大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護"
-			msgObj = TextSendMessage(text=reply_msg)
-			if replied:
-				self.push(msgObj)
-			else:
-				self.reply(msgObj)
-			replied = True
-		if (("程式" in msg) or ("用" in msg)) and ("語言" in msg):
-			reply_msg = "我最近常用的語言是Python\n其他會使用的語言有C/C++，也接觸過一點點的Ruby on Rails和JavaScript喔"
-			msgObj = TextSendMessage(text=reply_msg)
-			if replied:
-				self.push(msgObj)
-			else:
-				self.reply(msgObj)
-			replied = True
-		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg):
-			reply_msg = "等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷"
-			msgObj = TextSendMessage(text=reply_msg)
-			if replied:
-				self.push(msgObj)
-			else:
-				self.reply(msgObj)
-			reply_msg = "https://goo.gl/nDL4eQ"
-			msgObj = TextSendMessage(text=reply_msg)
-			self.push(msgObj)
-			replied = True
-		if ("使用說明" in msg) or ("如何使用" in msg):
-			msgObj = example
-			if replied:
-				self.push(msgObj)
-			else:
-				self.reply(msgObj)
-			replied = True
-		if not replied:
-			reply_msg = "對不起，我現在還不會回答這個問題...\nQ_Q"
-			msgObj = TextSendMessage(text=reply_msg)
-			self.reply(msgObj)
-			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
-			self.push(stkObj)
-
-	def push(self, msg):
-		line_bot_api.push_message(
-				self.profile.user_id,
-				msg)
-	def reply(self, msg):
-		line_bot_api.reply_message(
-				self.event.reply_token,
-				msg)
-
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=os.environ['PORT'])
