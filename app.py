@@ -1,10 +1,8 @@
 # encoding: utf-8
 import os
 import requests
-from flask import Flask, request, abort
+from flask import Flask, request, abort, send_file
 import random
-import re
-import regex as r
 
 # LINE
 from linebot import (
@@ -26,6 +24,15 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 @app.route('/')
 def index():
 	return "<p>Hello World!</p>"
+
+@app.route('/image')
+def get_image():
+	if request.args.get('name') == 'carousel':
+		filename = 'carousel.jpg'
+	else:
+		filename = 'error.jpg'
+	return send_file(filename, mimetype='image/jpg')
+    
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -68,7 +75,7 @@ def handle_join(event):
 		event.reply_token,
 		TextSendMessage(text=greeting_msg))
 # ============ BOT Related Handler End ===============
-#Button Template
+# Template Message
 button = TemplateSendMessage(
 	alt_text="說明",
 	template=ButtonsTemplate(
@@ -90,30 +97,13 @@ button = TemplateSendMessage(
 				uri='https://www.facebook.com/TWTRubiks?ref=bookmarks')])
 )
 
-button_edu = TemplateSendMessage(
-	alt_text="教育",
-	template=ButtonsTemplate(
-		title="功能介紹 - 學經歷",
-		text="你可以試著問我這樣的問題",
-		thumbnail_image_url='https://i.imgur.com/kzi5kKy.jpg',
-		actions=[
-			MessageTemplateAction(
-				label="你目前就讀那間學校呢？",
-				text="你目前就讀那間學校呢？"),
-			MessageTemplateAction(
-				label="說說你的學歷吧",
-				text="說說你的學歷吧"),
-			MessageTemplateAction(
-				label="你畢業於哪一所學校呢？",
-				text="你畢業於哪一所學校呢？")])
-)
 example = TemplateSendMessage(
-	alt_text='Carousel template',
+	alt_text="範例問題",
 	template=CarouselTemplate(
 		columns=[
 			CarouselColumn(
-				thumbnail_image_url='https://example.com/item1.jpg',
-				title="功能介紹 - 實習類問題",
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel.jpg',
+				title="功能介紹 - 實習相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
 					MessageTemplateAction(
@@ -126,8 +116,8 @@ example = TemplateSendMessage(
 						label="你有相關的工作經驗嗎？",
 						text="你有相關的工作經驗嗎？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://example.com/item1.jpg',
-				title="功能介紹 - 學經歷",
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel.jpg',
+				title="功能介紹 - 學歷相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
 					MessageTemplateAction(
@@ -140,8 +130,8 @@ example = TemplateSendMessage(
 						label="你畢業於哪一所學校呢？",
 						text="你畢業於哪一所學校呢？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://example.com/item1.jpg',
-				title="功能介紹 - 程式語言",
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel.jpg',
+				title="功能介紹 - 程式語言相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
 					MessageTemplateAction(
@@ -152,12 +142,24 @@ example = TemplateSendMessage(
 						text="說說你會用的語言吧"),
 					MessageTemplateAction(
 						label="你都用什麼語言寫程式？",
-						text="你都用什麼語言寫程式？"),])
-		]
-	)
+						text="你都用什麼語言寫程式？"),]),
+			CarouselColumn(
+				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel.jpg',
+				title="功能介紹 - 履歷相關問題",
+				text="你可以試著問我這樣的問題",
+				actions=[
+					MessageTemplateAction(
+						label="可以看看你的履歷嗎？",
+						text="可以看看你的履歷嗎？"),
+					MessageTemplateAction(
+						label="可以提供自傳相關資料嗎？",
+						text="可以提供自傳相關資料嗎？"),
+					MessageTemplateAction(
+						label="有沒有提供簡歷呢？",
+						text="有沒有提供簡歷呢？"),])])
 )
 # Rich Menu
-'''rich_menu_to_create = RichMenu(
+'''rich_menu_create = RichMenu(
 	size=RichMenuBound(
 		width=2500,
 		height=1686),
@@ -232,7 +234,7 @@ class Reply(Event):
 				self.reply(msgObj)
 			replied = True
 		if not replied:
-			reply_msg = "對不起，我現在還不會回答這個問題\nQ_Q"
+			reply_msg = "對不起，我現在還不會回答這個問題...\nQ_Q"
 			msgObj = TextSendMessage(text=reply_msg)
 			self.reply(msgObj)
 			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
