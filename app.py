@@ -51,6 +51,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
 	Reply(event).reply_to_usr()
+	if event.
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
@@ -74,7 +75,7 @@ def handle_follow(event):
 @handler.add(JoinEvent)
 def handle_join(event):
 	profile = line_bot_api.get_profile(event.source.group_id)
-	greeting_msg = profile.display_name+"大家好～我是自我介紹機器人Freddy請大家趕快加我好友吧"
+	greeting_msg = "大家好～"
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text=greeting_msg))
