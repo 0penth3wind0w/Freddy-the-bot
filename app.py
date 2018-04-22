@@ -56,19 +56,16 @@ def handle_text_message(event):
 def handle_sticker_message(event):
 	stkObj = StickerSendMessage(package_id=2,sticker_id=144)
 	decide = [True, False]
-	if decide:
-		line_bot_api.reply_message(
-		event.reply_token,
-		stkObj)
+	if decide == True:
+		line_bot_api.reply_message(event.reply_token,stkObj)
 
 # Greeting messages when user add this bot
 @handler.add(FollowEvent)
 def handle_follow(event):
 	profile = line_bot_api.get_profile(event.source.user_id)
-	greeting_msg = profile.display_name+"你好～我是自我介紹機器人Freddy，很高興認識你\n請先試試看各項功能吧"
+	greeting_msg = profile.display_name+"你好～我是Freddy，很高興認識你\n請先試試看各項功能吧"
 	line_bot_api.reply_message(
-		event.reply_token,
-		TextSendMessage(text=greeting_msg))
+		event.reply_token, TextSendMessage(text=greeting_msg))
 	line_bot_api.push_message(profile.user_id, carousel_example)
 	line_bot_api.push_message(profile.user_id, TextSendMessage(text="如果需要更詳細的說明可以從下方點選喔"))
 
@@ -78,21 +75,26 @@ def handle_join(event):
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text="大家好～很高興認識你們～"))
-	line_bot_api.push_message(gid, TextSendMessage(text="請大家先透過網址或行動條碼加我好友吧：\nhttps://line.me/R/ti/p/%40dql8691q"))
+	reply_msg = "請大家先透過網址或行動條碼加我好友吧："+os.environ.get('LINE')
+	line_bot_api.push_message(
+		gid,
+		TextSendMessage(text=reply_msg))
+	url_code = os.environ.get('HEROKU') + 'image/QRcode'
 	line_bot_api.push_message(gid,ImageSendMessage(
-		original_content_url='https://self-promote-linebot.herokuapp.com/image/QRcode',
-		preview_image_url='https://self-promote-linebot.herokuapp.com/image/QRcode'))
+		original_content_url=url_code,
+		preview_image_url=url_code))
 	line_bot_api.push_message(gid, TextSendMessage(text="希望有機會可以再看到大家\n掰掰～"))
 	line_bot_api.leave_group(gid)
 
 # ============ BOT Related Handler End ===============
 # Template Message
+url_carousel = os.environ.get('HEROKU') + 'image/carousel'
 button_info = TemplateSendMessage(
 	alt_text="使用說明",
 	template=ButtonsTemplate(
 		title="使用說明",
 		text="請參考以下說明：",
-		thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel',
+		thumbnail_image_url=url_carousel,
 		actions=[
 			MessageTemplateAction(
 				label="使用範例",
@@ -110,7 +112,7 @@ carousel_example = TemplateSendMessage(
 	template=CarouselTemplate(
 		columns=[
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel',
+				thumbnail_image_url=url_carousel,
 				title="功能介紹 - 實習相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
@@ -124,7 +126,7 @@ carousel_example = TemplateSendMessage(
 						label="你有相關的工作經驗嗎？",
 						text="你有相關的工作經驗嗎？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel',
+				thumbnail_image_url=url_carousel,
 				title="功能介紹 - 學歷相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
@@ -138,7 +140,7 @@ carousel_example = TemplateSendMessage(
 						label="你畢業於哪一所學校呢？",
 						text="你畢業於哪一所學校呢？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel',
+				thumbnail_image_url=url_carousel,
 				title="功能介紹 - 程式語言相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
@@ -152,7 +154,7 @@ carousel_example = TemplateSendMessage(
 						label="你都用什麼語言寫程式？",
 						text="你都用什麼語言寫程式？"),]),
 			CarouselColumn(
-				thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image/carousel',
+				thumbnail_image_url=url_carousel,
 				title="功能介紹 - 履歷相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
