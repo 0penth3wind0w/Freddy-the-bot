@@ -79,7 +79,7 @@ def handle_join(event):
 	line_bot_api.push_message(
 		gid,
 		TextSendMessage(text=reply_msg))
-	url_code = os.environ.get('HEROKU') + 'image/QRcode'
+	url_code = str(os.environ.get('HEROKU')) + 'image/QRcode'
 	line_bot_api.push_message(gid,ImageSendMessage(
 		original_content_url=url_code,
 		preview_image_url=url_code))
@@ -88,7 +88,7 @@ def handle_join(event):
 
 # ============ BOT Related Handler End ===============
 # Template Message
-url_carousel = os.environ.get('HEROKU') + 'image/carousel'
+url_carousel = str(os.environ.get('HEROKU')) + 'image/carousel'
 button_info = TemplateSendMessage(
 	alt_text="使用說明",
 	template=ButtonsTemplate(
