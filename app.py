@@ -95,7 +95,7 @@ button_info = TemplateSendMessage(
 		actions=[
 			URITemplateAction(
 				label='詳細功能介紹',
-				uri='https://github.com/0penth3wind0w/Freddy-the-bot'),
+				uri='https://github.com/0penth3wind0w/Freddy-the-bot/blob/master/README.md'),
 			MessageTemplateAction(
 				label="使用範例",
 				text="使用範例")])
