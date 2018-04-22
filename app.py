@@ -28,9 +28,9 @@ def index():
 @app.route('/image')
 def get_image():
 	if request.args.get('name') == 'carousel':
-		filename = './image/carousel.jpg'
+		filename = 'image/carousel.jpg'
 	else:
-		filename = './image/error.jpg'
+		filename = 'image/error.jpg'
 	return send_file(filename, mimetype='image/jpg')
     
 
