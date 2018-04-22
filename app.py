@@ -78,6 +78,8 @@ def handle_join(event):
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text=greeting_msg))
+	line_bot_api.leave_group(gid)
+
 # ============ BOT Related Handler End ===============
 # Template Message
 button_info = TemplateSendMessage(
