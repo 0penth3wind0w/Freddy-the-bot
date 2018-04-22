@@ -56,7 +56,6 @@ def handle_text_message(event):
 @handler.add(FollowEvent)
 def handle_follow(event):
 	profile = line_bot_api.get_profile(event.source.user_id)
-	line_bot_apilink_rich_menu_to_user( profile.user_id, rich_menu_id, timeout=None)
 	greeting_msg = profile.display_name+"你好～我是自我介紹機器人Freddy，很高興認識你\n請先試試看各項功能吧"
 	line_bot_api.reply_message(
 		event.reply_token,
@@ -155,7 +154,7 @@ example = TemplateSendMessage(
 						text="有沒有提供簡歷呢？"),])])
 )
 # Rich Menu
-rich_menu = RichMenu(
+'''rich_menu = RichMenu(
 	size=RichMenuBound(
 		width=2500,
 		height=1686),
@@ -172,7 +171,7 @@ rich_menu = RichMenu(
 				uri='line://nv/location'))]
 )
 rich_menu_id = line_bot_api.create_rich_menu(data=rich_menu)
-
+'''
 # Use to reply users
 class Reply(Event):
 	def __init__(self, event=None):
