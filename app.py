@@ -63,7 +63,7 @@ def handle_sticker_message(event):
 @handler.add(FollowEvent)
 def handle_follow(event):
 	profile = line_bot_api.get_profile(event.source.user_id)
-	greeting_msg = profile.display_name+"你好～我是Freddy，很高興認識你\n請先試試看下面的功能吧"
+	greeting_msg = profile.display_name+"您好～我是Freddy，很高興認識你\n請先試試看下面的功能吧"
 	line_bot_api.reply_message(
 		event.reply_token, TextSendMessage(text=greeting_msg))
 	line_bot_api.push_message(profile.user_id, carousel_example)
@@ -81,7 +81,7 @@ def handle_join(event):
 	line_bot_api.push_message(gid,ImageSendMessage(
 		original_content_url=url_code,
 		preview_image_url=url_code))
-	line_bot_api.push_message(gid, TextSendMessage(text="希望有機會可以在一對一聊天中看到大家\n掰掰～"))
+	line_bot_api.push_message(gid, TextSendMessage(text="希望有機會可以在一對一聊天中看到大家囉\n掰掰～"))
 	line_bot_api.leave_group(gid)
 # ============ BOT Related Handler End ===============
 # Template Message
@@ -185,7 +185,7 @@ class Reply(Event):
 				self.reply(msgObj)
 			replied = True
 		if ("工作" in msg) or ("實習" in msg):
-			msgObj = TextSendMessage(text="大學的寒暑假時，我曾經去巨司文化（數位時代、經理人）實習。實習的時候主要負責網站的維護")
+			msgObj = TextSendMessage(text="我在大學的寒暑假時，曾去巨思文化（數位時代、經理人）實習。實習的時候主要負責網站的維護")
 			if replied:
 				self.push(msgObj)
 			else:
@@ -199,7 +199,7 @@ class Reply(Event):
 				self.reply(msgObj)
 			replied = True
 		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg):
-			msgObj = TextSendMessage(text="等我一下喔～我把我的自傳傳給你，裡面有更多詳細的資料唷")
+			msgObj = TextSendMessage(text="等我一下喔～我把我的自傳傳給你，裡面有程式開發經驗等更多詳細的資料唷")
 			if replied:
 				self.push(msgObj)
 			else:
