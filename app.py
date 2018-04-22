@@ -84,7 +84,7 @@ button_info = TemplateSendMessage(
 	alt_text="使用說明",
 	template=ButtonsTemplate(
 		title="使用說明",
-		text="",
+		text="請參考以下說明：",
 		thumbnail_image_url='https://self-promote-linebot.herokuapp.com/image',
 		actions=[
 			MessageTemplateAction(
@@ -216,6 +216,7 @@ class Reply(Event):
 				self.push(button_info)
 			else:
 				self.reply(button_info)
+			replied = True
 		if ("範例" in msg):
 			if replied:
 				self.push(carousel_example)
@@ -231,6 +232,7 @@ class Reply(Event):
 			reply_msg = os.environ.get('CONTACT_INFO')
 			msgObj = TextSendMessage(text=reply_msg)
 			self.push(msgObj)
+			replied = True
 		if not replied:
 			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...\nQ_Q")
 			self.reply(msgObj)
