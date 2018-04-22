@@ -23,7 +23,7 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 
 @app.route('/')
 def index():
-	return "<p>Hello World!</p>"
+	return redirect("https://www.github.com/0penth3wind0w", code=302)
 @app.route('/image/carousel')
 def get_carousel_img():
 	filename = 'image/carousel.jpg'
