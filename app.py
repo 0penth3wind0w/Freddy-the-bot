@@ -73,7 +73,7 @@ def handle_follow(event):
 
 @handler.add(JoinEvent)
 def handle_join(event):
-	profile = line_bot_api.get_profile(event.source.group_id)
+	gid = event.source.group_id
 	greeting_msg = "大家好～"
 	line_bot_api.reply_message(
 		event.reply_token,
