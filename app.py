@@ -51,7 +51,6 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
 	Reply(event).reply_to_usr()
-	if event.
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
