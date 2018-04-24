@@ -1,6 +1,7 @@
 # encoding: utf-8
 import os
 import requests
+import wikipedia as wiki
 from flask import Flask, request, abort, send_file, redirect
 import random
 
@@ -296,11 +297,20 @@ class Reply(Event):
 			else:
 				self.reply(msgObj)
 			replied = True
+		if ("維基" in msg[0:2]):
+			reply_msg = getWiki(msg[2:])
+			msgObj = TextSendMessage(text=reply_msg)
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			replied = True
 		if not replied:
 			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...Q_Q")
 			self.reply(msgObj)
 			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
 			self.push(stkObj)
+
 	def push(self, msg):
 		line_bot_api.push_message(
 				self.profile.user_id,
@@ -309,6 +319,13 @@ class Reply(Event):
 		line_bot_api.reply_message(
 				self.event.reply_token,
 				msg)
+
+# Experimental Function
+def getwiki(str):
+	try:
+		return wiki.summary(str)
+	except
+		return "抱歉，我沒有找到相關訊息喔"
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=os.environ['PORT'])
