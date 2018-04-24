@@ -205,6 +205,7 @@ class Reply(Event):
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
+			replied = True
 		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
 			msgObj = TextSendMessage(text="我現在就讀於北科大的資訊工程研究所，目前是碩一研究生。")
 			if replied:
@@ -221,7 +222,7 @@ class Reply(Event):
 			else:
 				self.reply(msgObj)
 			msgObj = TextSendMessage(text="另外在大學時也有在通訊工程系的語音處理實驗室打工，主要是負責資料處理程式的撰寫喔")
-
+			self.push(msgObj)
 			replied = True
 		if (("程式" in msg) or ("用" in msg)) and ("語言" in msg):
 			msgObj = TextSendMessage(text="我最近常用的語言是Python\n其他會使用的語言有C/C++，也接觸過一點點的Ruby on Rails和JavaScript喔")
@@ -276,7 +277,10 @@ class Reply(Event):
 			msgs = ["Bye", "掰掰", "再見"]
 			reply_msg = random.choice(msgs) + "～"
 			msgObj = TextSendMessage(text=reply_msg)
-			self.reply(msgObj)
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
 			replied = True
 		if not replied:
 			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...\nQ_Q")
