@@ -1,7 +1,7 @@
 # encoding: utf-8
 import os
 import requests
-from flask import Flask, request, abort, send_file
+from flask import Flask, request, abort, send_file, redirect
 import random
 
 # LINE
@@ -27,11 +27,18 @@ def index():
 @app.route('/image/carousel')
 def get_carousel_img():
 	filename = 'image/carousel.jpg'
-	return send_file(filename, mimetype='image/jpg')
+	return send_file(filename, mimetype='image/jpeg')
 @app.route('/image/QRcode')
 def get_qrcode_img():
 	filename = 'image/QRcode.png'
 	return send_file(filename, mimetype='image/png')
+@app.route('/image/amp1')
+def get_amp1_img():
+	filename = 'image/amp1.jpg'
+	return send_file(filename, mimetype='image/jpeg')
+def get_amp2_img():
+	filename = 'image/amp2.jpg'
+	return send_file(filename, mimetype='image/jpeg')
 @app.route("/callback", methods=['POST'])
 def callback():
 	# get X-Line-Signature header value
@@ -55,9 +62,7 @@ def handle_text_message(event):
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
 	stkObj = StickerSendMessage(package_id=2,sticker_id=144)
-	decide = [True, False]
-	if decide == True:
-		line_bot_api.reply_message(event.reply_token,stkObj)
+	line_bot_api.reply_message(event.reply_token,stkObj)
 
 # Greeting messages when user add this bot
 @handler.add(FollowEvent)
@@ -163,6 +168,22 @@ carousel_example = TemplateSendMessage(
 						text="有沒有提供簡歷呢？"),])])
 )
 
+carousel_amp = TemplateSendMessage(
+	alt_text="擴大機的照片",
+	template=ImageCarouselTemplate(
+		columns=[
+			ImageCarouselColumn(
+				image_url='https://self-promote-linebot.herokuapp.com/image/amp1',
+				action=URITemplateAction(
+					label="擴大機的照片",
+					uri='https://self-promote-linebot.herokuapp.com/image/amp1')),
+			ImageCarouselColumn(
+				image_url='https://self-promote-linebot.herokuapp.com/image/amp2',
+				action=URITemplateAction(
+					label="擴大機的照片",
+					uri='https://self-promote-linebot.herokuapp.com/image/amp2'))])
+)
+
 # Use to reply users
 class Reply(Event):
 	def __init__(self, event=None):
@@ -177,12 +198,20 @@ class Reply(Event):
 			msgObj = TextSendMessage(text=reply_msg)
 			self.reply(msgObj)
 			replied = True
-		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
-			msgObj = TextSendMessage(text="我目前就讀於北科大的資訊工程研究所\n大學則是就讀國立臺北大學，主修資訊工程，並雙主修金融與合作經營。")
+		if ("你是誰" in msg) or ("自我介紹" in msg) or (("簡" in msg) and ("介" in msg)):
+			msgObj = TextSendMessage(text="我是Freddy。目前是北科大的研究生喔\n你可以透過問問題來認識我喔！")
 			if replied:
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
+		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
+			msgObj = TextSendMessage(text="我現在就讀於北科大的資訊工程研究所，目前是碩一研究生。")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			msgObj = TextSendMessage(text="大學則是就讀國立臺北大學，主修資訊工程，另外還有雙主修金融與合作經營。")
+			self.push(msgObj)
 			replied = True
 		if ("工作" in msg) or ("實習" in msg):
 			msgObj = TextSendMessage(text="我在大學的寒暑假時，曾去巨思文化（數位時代、經理人）實習。實習的時候主要負責網站的維護")
@@ -190,6 +219,8 @@ class Reply(Event):
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
+			msgObj = TextSendMessage(text="另外在大學時也有在通訊工程系的語音處理實驗室打工，主要是負責資料處理程式的撰寫喔")
+
 			replied = True
 		if (("程式" in msg) or ("用" in msg)) and ("語言" in msg):
 			msgObj = TextSendMessage(text="我最近常用的語言是Python\n其他會使用的語言有C/C++，也接觸過一點點的Ruby on Rails和JavaScript喔")
@@ -197,6 +228,16 @@ class Reply(Event):
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
+			replied = True
+		if ("興趣"in msg):
+			msgObj = TextSendMessage(text="我的興趣是聽音樂跟DIY做一些有趣的東西\n像是50音記憶的網頁跟耳機用的擴大機都是平常利用閒暇時間做出來的喔")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
+			msgObj = TextSendMessage(text="以下是擴大機的一些照片喔")
+			self.push(msgObj)
+			self.push(carousel_amp)
 			replied = True
 		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg):
 			msgObj = TextSendMessage(text="等我一下喔～我把我的自傳傳給你，裡面有程式開發經驗等更多詳細的資料唷")
