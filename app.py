@@ -4,6 +4,7 @@ import requests
 import wikipedia as wiki
 from flask import Flask, request, abort, send_file, redirect
 import random
+import zhconv
 
 # LINE
 from linebot import (
@@ -325,7 +326,7 @@ class Reply(Event):
 # Experimental Function
 def getWiki(str):
 	try:
-		return wiki.summary(str)
+		return zhconv.convert(wiki.summary(str), 'zh-tw')
 	except:
 		return "抱歉，我沒有找到相關訊息喔"
 
