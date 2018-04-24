@@ -22,6 +22,8 @@ app = Flask(__name__)
 handler = WebhookHandler(SECRET) 
 line_bot_api = LineBotApi(ACCESS_TOKEN) 
 
+wikipedia.set_lang("zh-tw")
+
 @app.route('/')
 def index():
 	return redirect("https://www.github.com/0penth3wind0w", code=302)
