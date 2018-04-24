@@ -155,6 +155,20 @@ carousel_example = TemplateSendMessage(
 						text="你都用什麼語言寫程式？"),]),
 			CarouselColumn(
 				thumbnail_image_url=url_carousel,
+				title="功能介紹 - 興趣相關問題",
+				text="你可以試著問我這樣的問題",
+				actions=[
+					MessageTemplateAction(
+						label="你的興趣是什麼呢？",
+						text="你的興趣是什麼呢？"),
+					MessageTemplateAction(
+						label="說說你的興趣吧",
+						text="說說你的興趣吧"),
+					MessageTemplateAction(
+						label="你有什麼興趣嗎？",
+						text="你有什麼興趣嗎？"),]),
+			CarouselColumn(
+				thumbnail_image_url=url_carousel,
 				title="功能介紹 - 履歷相關問題",
 				text="你可以試著問我這樣的問題",
 				actions=[
@@ -200,19 +214,19 @@ class Reply(Event):
 			self.reply(msgObj)
 			replied = True
 		if ("你是誰" in msg) or ("自我介紹" in msg) or (("簡" in msg) and ("介" in msg)):
-			msgObj = TextSendMessage(text="我是Freddy。目前是北科大的研究生喔\n你可以透過問問題來認識我喔！")
+			msgObj = TextSendMessage(text="我是Freddy。是一個個性沉穩的研究生。\n你可以透過問問題來認識我喔！")
 			if replied:
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
 			replied = True
 		if ("學歷" in msg) or ("學校" in msg) or ("就讀" in msg) or ("大學" in msg) or ("研究所" in msg):
-			msgObj = TextSendMessage(text="我現在就讀於北科大的資訊工程研究所，目前是碩一研究生。")
+			msgObj = TextSendMessage(text="我現在就讀於北科大的資訊工程研究所，目前是碩一研究生")
 			if replied:
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
-			msgObj = TextSendMessage(text="大學則是就讀國立臺北大學，主修資訊工程，另外還有雙主修金融與合作經營。")
+			msgObj = TextSendMessage(text="大學則是就讀國立臺北大學，主修資訊工程，另外還有雙主修金融與合作經營")
 			self.push(msgObj)
 			replied = True
 		if ("工作" in msg) or ("實習" in msg):
@@ -225,14 +239,14 @@ class Reply(Event):
 			self.push(msgObj)
 			replied = True
 		if (("程式" in msg) or ("用" in msg)) and ("語言" in msg):
-			msgObj = TextSendMessage(text="我最近常用的語言是Python\n其他會使用的語言有C/C++，也接觸過一點點的Ruby on Rails和JavaScript喔")
+			msgObj = TextSendMessage(text="我最近常用的語言是Python\n其他會使用的語言有C/C++，也接觸過一點點的JavaScript和Ruby on Rails喔")
 			if replied:
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
 			replied = True
 		if ("興趣"in msg):
-			msgObj = TextSendMessage(text="我的興趣是聽音樂跟DIY做一些有趣的東西\n像是50音記憶的網頁跟耳機用的擴大機都是平常利用閒暇時間做出來的喔")
+			msgObj = TextSendMessage(text="我的興趣是聽音樂跟DIY做一些有趣的東西。\n像是50音記憶的網頁跟耳機用的擴大機都是利用閒暇時間做出來的喔")
 			if replied:
 				self.push(msgObj)
 			else:
@@ -241,7 +255,7 @@ class Reply(Event):
 			self.push(msgObj)
 			self.push(carousel_amp)
 			replied = True
-		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg):
+		if ("履歷" in msg) or ("簡歷" in msg) or ("自傳" in msg) or ("開發經驗" in msg):
 			msgObj = TextSendMessage(text="等我一下喔～我把我的自傳傳給你，裡面有程式開發經驗等更多詳細的資料唷")
 			if replied:
 				self.push(msgObj)
@@ -283,7 +297,7 @@ class Reply(Event):
 				self.reply(msgObj)
 			replied = True
 		if not replied:
-			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...\nQ_Q")
+			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...Q_Q")
 			self.reply(msgObj)
 			stkObj = StickerSendMessage(package_id=2,sticker_id=153)
 			self.push(stkObj)
