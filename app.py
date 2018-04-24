@@ -36,6 +36,7 @@ def get_qrcode_img():
 def get_amp1_img():
 	filename = 'image/amp1.jpg'
 	return send_file(filename, mimetype='image/jpeg')
+@app.route('/image/amp2')
 def get_amp2_img():
 	filename = 'image/amp2.jpg'
 	return send_file(filename, mimetype='image/jpeg')
@@ -235,7 +236,7 @@ class Reply(Event):
 				self.push(msgObj)
 			else:
 				self.reply(msgObj)
-			msgObj = TextSendMessage(text="以下是擴大機的一些照片喔")
+			msgObj = TextSendMessage(text='http://0penth3wind0w.github.io/gojuon_game/')
 			self.push(msgObj)
 			self.push(carousel_amp)
 			replied = True
