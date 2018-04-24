@@ -22,7 +22,7 @@ app = Flask(__name__)
 handler = WebhookHandler(SECRET) 
 line_bot_api = LineBotApi(ACCESS_TOKEN) 
 
-wikipedia.set_lang("zh-tw")
+wiki.set_lang("zh-tw")
 
 @app.route('/')
 def index():
