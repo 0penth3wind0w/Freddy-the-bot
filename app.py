@@ -321,7 +321,7 @@ class Reply(Event):
 				msg)
 
 # Experimental Function
-def getwiki(str):
+def getWiki(str):
 	try:
 		return wiki.summary(str)
 	except:
