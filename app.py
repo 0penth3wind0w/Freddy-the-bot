@@ -324,7 +324,7 @@ class Reply(Event):
 def getwiki(str):
 	try:
 		return wiki.summary(str)
-	except
+	except:
 		return "抱歉，我沒有找到相關訊息喔"
 
 if __name__ == "__main__":
