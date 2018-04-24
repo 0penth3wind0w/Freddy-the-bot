@@ -328,7 +328,7 @@ def getWiki(str):
 	try:
 		return zhconv.convert(wiki.summary(str), 'zh-tw')
 	except:
-		return "抱歉，我沒有找到相關訊息喔"
+		return "抱歉，我沒有找到相關訊息...\n(｡í _ ì｡)"
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',port=os.environ['PORT'])
