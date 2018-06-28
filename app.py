@@ -26,6 +26,19 @@ handler = WebhookHandler(SECRET)
 line_bot_api = LineBotApi(ACCESS_TOKEN) 
 
 wiki.set_lang("zh-tw")
+# Keep the bot up
+sch = sched.scheduler(time.time, time.sleep)
+def wakeup():
+	keep_up()
+	sch.enter(1500, 1, wakeup)
+
+def keep_up():
+	sum = 0
+	for i in range(1000):
+		sum += i
+
+sch.enter(1, 1, wakeup)
+sch.run()
 
 @app.route('/')
 def index():
@@ -338,19 +351,6 @@ class Reply(Event):
 		line_bot_api.reply_message(
 				self.event.reply_token,
 				msg)
-
-# Keep the bot up
-sch = sched.scheduler(time.time, time.sleep)
-def wakeup():
-	keep_up()
-	sch.enter(1500, 1, wakeup)
-
-def keep_up():
-	if True:
-		pass
-
-sch.enter(1, 1, wakeup)
-sch.run()
 
 # Experimental Function
 def getWiki(str):
