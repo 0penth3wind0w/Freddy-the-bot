@@ -343,11 +343,14 @@ class Reply(Event):
 sch = sched.scheduler(time.time, time.sleep)
 def wakeup():
 	keep_up()
-	sch.enter(3480, 1, wakwup)
+	sch.enter(1500, 1, wakeup)
 
 def keep_up():
 	if True:
 		pass
+
+sch.enter(1, 1, wakeup)
+sch.run()
 
 # Experimental Function
 def getWiki(str):
