@@ -5,6 +5,7 @@ import wikipedia as wiki
 from flask import Flask, request, abort, send_file, redirect
 import random
 import zhconv
+from wakeonlan import send_magic_packet 
 
 # LINE
 from linebot import (
@@ -308,6 +309,20 @@ class Reply(Event):
 			else:
 				self.reply(msgObj)
 			replied = True
+		if ("開" in msg):
+			if ("Win" in msg):
+				mac = os.environ.get('WIN_MAC')
+				ip = os.environ.get('WIN_IP')
+				send_magic_packet(mac,ip_address = ip)
+			elif("電腦" in msg):
+				mac = os.environ.get('LNX_MAC')
+				ip = os.environ.get('LNX_IP')
+				send_magic_packet(mac,ip_address = ip)
+			msgObj = TextSendMessage(text="開好囉")
+			if replied:
+				self.push(msgObj)
+			else:
+				self.reply(msgObj)
 		if not replied:
 			msgObj = TextSendMessage(text="對不起，我現在還不會回答這個問題...Q_Q")
 			self.reply(msgObj)

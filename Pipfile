@@ -9,6 +9,7 @@ line-bot-sdk = "*"
 flask = "*"
 wikipedia = "*"
 zhconv = "*"
+wakeonlan = "*"
 
 [requires]
 python_version = "3.6"
