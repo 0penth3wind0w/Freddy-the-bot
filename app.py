@@ -5,7 +5,8 @@ import wikipedia as wiki
 from flask import Flask, request, abort, send_file, redirect
 import random
 import zhconv
-from wakeonlan import send_magic_packet 
+from wakeonlan import send_magic_packet
+import sched, time
 
 # LINE
 from linebot import (
@@ -337,6 +338,16 @@ class Reply(Event):
 		line_bot_api.reply_message(
 				self.event.reply_token,
 				msg)
+
+# Keep the bot up
+sch = sched.scheduler(time.time, time.sleep)
+def wakeup():
+	keep_up()
+	sch.enter(3480, 1, wakwup)
+
+def keep_up():
+	if True:
+		pass
 
 # Experimental Function
 def getWiki(str):
