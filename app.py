@@ -6,7 +6,6 @@ from flask import Flask, request, abort, send_file, redirect
 import random
 import zhconv
 from wakeonlan import send_magic_packet
-import sched, time
 
 # LINE
 from linebot import (
@@ -26,19 +25,6 @@ handler = WebhookHandler(SECRET)
 line_bot_api = LineBotApi(ACCESS_TOKEN) 
 
 wiki.set_lang("zh-tw")
-# Keep the bot up
-sch = sched.scheduler(time.time, time.sleep)
-def wakeup():
-	keep_up()
-	sch.enter(1500, 1, wakeup)
-
-def keep_up():
-	sum = 0
-	for i in range(1000):
-		sum += i
-
-sch.enter(1, 1, wakeup)
-sch.run()
 
 @app.route('/')
 def index():
