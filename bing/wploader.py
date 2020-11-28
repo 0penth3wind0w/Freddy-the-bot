@@ -9,7 +9,7 @@ TODAY = date.today()
 BASE_ROUTE = os.environ.get('BASE_ROUTE')
 os.path.curdir
 
-def download_wallpaper() -> str:
+def get_wp_url() -> str:
     header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"}
     url = "https://www.bing.com"
     response = requests.get(url, headers=header)
@@ -18,6 +18,10 @@ def download_wallpaper() -> str:
     wp_path = soup.find(id="preloadBg").get("href")
     idx = wp_path.index('&')
     wp_url = url + wp_path[:idx].replace("1920x1080", "UHD")
+    return wp_url
+
+def download_wallpaper() -> str:
+    wp_url = get_wp_url()
     
     wp_name = "../image/wallpaper/{0}.jpg".format(TODAY)
     print(os.path.curdir)
