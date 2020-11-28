@@ -19,7 +19,7 @@ class Reply(Event):
         message = self.event.message.text #message from user
         if any(keyword in message for keyword in ['wallpaper']):
             wallpaper_url = get_wp_url()
-            msgObj = ImageSendMessage(original_content_url=wallpaper_url)
+            msgObj = ImageSendMessage(wallpaper_url, wallpaper_url)
             line_bot_api.reply_message(self.event.reply_token, msgObj)
             replied = True
         
