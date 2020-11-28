@@ -7,8 +7,7 @@ gunicorn = "*"
 requests = "*"
 line-bot-sdk = "*"
 flask = "*"
-wikipedia = "*"
-zhconv = "*"
+BeautifulSoup = "*"
 
 [requires]
 python_version = "3.6"
