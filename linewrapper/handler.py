@@ -4,7 +4,7 @@ from linebot import WebhookHandler
 from linebot.models import (MessageEvent, FollowEvent, JoinEvent,
                             TextMessage, StickerMessage,)
 
-from reply_handler import Reply
+from .reply_handler import Reply
 
 SECRET = os.environ.get('CHANNEL_SECRET')
 

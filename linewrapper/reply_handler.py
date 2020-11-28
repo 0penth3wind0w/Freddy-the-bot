@@ -5,7 +5,7 @@ from linebot import LineBotApi
 from linebot.models import Event, TextSendMessage, StickerSendMessage, ImageSendMessage
 
 from bing.downloader import download_wallpaper, wallpaper_exist, local_wallpaper
-from message_template import button_info
+from .message_template import button_info
 
 ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
 line_bot_api = LineBotApi(ACCESS_TOKEN)
