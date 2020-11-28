@@ -18,7 +18,8 @@ class Reply(Event):
         replied = False
         message = self.event.message.text #message from user
         if any(keyword in message for keyword in ['wallpaper']):
-            msgObj = ImageSendMessage(get_wp_url())
+            wallpaper_url = get_wp_url()
+            msgObj = ImageSendMessage(original_content_url=wallpaper_url)
             line_bot_api.reply_message(self.event.reply_token, msgObj)
             replied = True
         
@@ -26,12 +27,12 @@ class Reply(Event):
             profile = line_bot_api.get_profile(self.event.source.user_id)
             msgObj = TextSendMessage(text="Invalid command")
             line_bot_api.reply_message(self.event.reply_token, msgObj)
-            stkObj = StickerSendMessage(package_id=2,sticker_id=153)
+            stkObj = StickerSendMessage(package_id=2, sticker_id=149)
             line_bot_api.push_message(profile.user_id, stkObj)
 
     def reply_sticker(self):
         stkObj = StickerSendMessage(package_id=2,sticker_id=144)
-        line_bot_api.reply_message(self.event.reply_token,stkObj)
+        line_bot_api.reply_message(self.event.reply_token, stkObj)
 
     def reply_join(self):
         group_id = self.event.source.group_id
