@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 TODAY = date.today()
 BASE_ROUTE = os.environ.get('BASE_ROUTE')
+os.path.curdir
 
 def download_wallpaper() -> str:
     header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"}
@@ -19,6 +20,7 @@ def download_wallpaper() -> str:
     wp_url = url + wp_path[:idx].replace("1920x1080", "UHD")
     
     wp_name = "../image/wallpaper/{0}.jpg".format(TODAY)
+    print(os.path.curdir)
     with requests.get(wp_url, stream=True) as r:
         with open(wp_name, 'wb') as f:
             shutil.copyfileobj(r.raw, f)
