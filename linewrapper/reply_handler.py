@@ -16,7 +16,7 @@ class Reply(Event):
 
     def reply_text(self):
         replied = False
-        message = self.event.message.text #message from user
+        message = self.event.message.text.lower #message from user
         if any(keyword in message for keyword in ['wallpaper']):
             wallpaper_url = get_wp_url()
             profile = line_bot_api.get_profile(self.event.source.user_id)
