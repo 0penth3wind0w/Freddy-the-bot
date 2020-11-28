@@ -13,21 +13,21 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 class Reply(Event):
     def __init__(self, event):
         self.event = event
-        self.profile = line_bot_api.get_profile(event.source.user_id)
 
     def reply_text(self):
         replied = False
         message = self.event.message.text #message from user
         if any(keyword in message for keyword in ['wallpaper']):
             msgObj = ImageSendMessage(get_wp_url())
-            self.reply(msgObj)
+            line_bot_api.reply_message(self.event.reply_token, msgObj)
             replied = True
         
         if not replied:
+            profile = line_bot_api.get_profile(self.event.source.user_id)
             msgObj = TextSendMessage(text="Invalid command")
-            self.reply(msgObj)
+            line_bot_api.reply_message(self.event.reply_token, msgObj)
             stkObj = StickerSendMessage(package_id=2,sticker_id=153)
-            self.push(stkObj)
+            line_bot_api.push_message(profile.user_id, stkObj)
 
     def reply_sticker(self):
         stkObj = StickerSendMessage(package_id=2,sticker_id=144)
@@ -49,10 +49,3 @@ class Reply(Event):
         greeting_msg = "Hi {0}, I can send you the bing wallpaper today".format(profile.display_name)
         line_bot_api.reply_message(self.event.reply_token, TextSendMessage(text=greeting_msg))
         # line_bot_api.push_message(profile.user_id, button_info)
-
-    def push(self, msg):
-        line_bot_api.push_message(self.profile.user_id, msg)
-
-    
-    def reply(self, msg):
-        line_bot_api.reply_message(self.event.reply_token, msg)
