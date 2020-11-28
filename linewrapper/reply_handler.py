@@ -19,6 +19,8 @@ class Reply(Event):
         replied = False
         message = self.event.message.text #message from user
         if any(keyword in message for keyword in ['wallpaper']):
+            if not wallpaper_exist():
+                download_wallpaper()
             msgObj = ImageSendMessage(local_wallpaper())
             self.reply(msgObj)
             replied = True
