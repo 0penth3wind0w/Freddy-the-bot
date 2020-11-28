@@ -4,7 +4,7 @@ import random
 from linebot import LineBotApi
 from linebot.models import Event, TextSendMessage, StickerSendMessage, ImageSendMessage
 
-from bing.downloader import download_wallpaper, wallpaper_exist, local_wallpaper
+from bing.wploader import get_wp_url
 from .message_template import button_info
 
 ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
@@ -19,9 +19,7 @@ class Reply(Event):
         replied = False
         message = self.event.message.text #message from user
         if any(keyword in message for keyword in ['wallpaper']):
-            if not wallpaper_exist():
-                download_wallpaper()
-            msgObj = ImageSendMessage(local_wallpaper())
+            msgObj = ImageSendMessage(get_wp_url())
             self.reply(msgObj)
             replied = True
         
