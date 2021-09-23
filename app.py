@@ -4,8 +4,13 @@ import os
 from flask import Flask, request, abort, send_file, redirect
 from linebot.exceptions import InvalidSignatureError
 
-
 from linewrapper.handler import handler
+from linewrapper.push import Push
+from bing.wploader import get_wp_url
+
+MAGIC_MESSAGE = os.environ.get('MAGIC_MESSAGE')
+MAGIC_PASSPHRASE = os.environ.get('MAGIC_PASSPHRASE')
+MAGIC_UID = os.environ.get('MAGIC_UID')
 
 app = Flask(__name__)
 
@@ -44,6 +49,17 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
+
+@app.route("/deliver", methods=['POST'])
+def deliver():
+    data = request.json
+    if data["message"] == MAGIC_MESSAGE and data["passphrase"] == MAGIC_PASSPHRASE:
+        push_instance = Push(MAGIC_UID)
+        wp_url = get_wp_url()
+        push_instance.push_image(wp_url)
+        push_instance.push_text(wp_url)
+    else:
+        abort(400)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port=os.environ['PORT'])
