@@ -60,6 +60,7 @@ def deliver():
         push_instance.push_text(wp_url)
     else:
         abort(400)
+    return 'OK'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port=os.environ['PORT'])
