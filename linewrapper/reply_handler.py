@@ -20,6 +20,8 @@ class Reply(Event):
         if any(keyword in message for keyword in ['wallpaper']):
             wallpaper_url = get_wp_url()
             profile = line_bot_api.get_profile(self.event.source.user_id)
+            print('log profile id')
+            print(profile)
             imageMsg = ImageSendMessage(wallpaper_url, wallpaper_url)
             line_bot_api.reply_message(self.event.reply_token, imageMsg)
             textMsg = TextSendMessage(text=wallpaper_url)
