@@ -30,11 +30,6 @@ def get_qrcode_img():
     filename = 'image/QRcode.png'
     return send_file(filename, mimetype='image/png')
 
-@app.route('/image/wallpaper/<image_name>/')
-def get_wallpaper(image_name):
-    filename = 'image/wallpaper/{0}.jpg'.format(image_name)
-    return send_file(filename, mimetype='image/jpeg')
-
 # Line reply
 @app.route("/callback", methods=['POST'])
 def callback():
