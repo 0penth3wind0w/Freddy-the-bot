@@ -10,7 +10,7 @@ BASE_ROUTE = os.environ.get('BASE_ROUTE')
 os.path.curdir
 
 def get_wp_url() -> str:
-    header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"}
+    header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36"}
     url = "https://www.bing.com"
     response = requests.get(url, headers=header)
 
