@@ -16,7 +16,7 @@ class Reply:
     
     def reply_image(self, image_url):
         image_message = ImageSendMessage(image_url, image_url)
-        line_bot_api.push_message(self.reply_token, image_message)
+        line_bot_api.reply_message(self.reply_token, image_message)
 
     def reply_sticker(self, sticker_package, sticker_id):
         sticker_message = StickerSendMessage(package_id=sticker_package, sticker_id=sticker_id)
